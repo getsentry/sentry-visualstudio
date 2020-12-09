@@ -12,3 +12,7 @@ It currently only supports C#. PRs for other languages are welcome.
 - [ ] Figure out why the custom CodeLens UI via `IViewFactory` doesn't work
 - [ ] Either cache namespaces or only read the source files up to the namespace definition to reduce unnecessary IO
 - [ ] Add screenshots
+
+![CodeLens](.github/code-lens-ex-count.png)
+![CodeLens exception ount](.github/code-lens.png)
+![Window](.github/window.png)
