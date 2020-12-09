@@ -2,7 +2,7 @@
 
 WIP Visual Studio integration for Sentry, supporting both hosted and on-premises.
 
-It currently only supports C#. PR for other languages is welcome.
+It currently only supports C#. PRs for other languages are welcome.
 
 # Requirements
 * .NET Framework 4.8
