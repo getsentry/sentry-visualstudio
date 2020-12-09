@@ -36,7 +36,7 @@ namespace VSSentry.Shared.Options
             var extensionKey = Registry.CurrentUser.OpenSubKey("SOFTWARE", true).CreateSubKey("Sentry").CreateSubKey("Visual Studio");
 
             var projectKey = extensionKey.CreateSubKey(projectId.ToString("D"));
-            projectKey.SetValue(nameof(ServerUrl), ServerUrl);
+            projectKey.SetValue(nameof(ServerUrl), ServerUrl ?? "https://sentry.io/");
             projectKey.SetValue(nameof(Organization), Organization ?? "sentry");
             projectKey.SetValue(nameof(Project), Project);
             projectKey.SetValue(nameof(ApiKey), ApiKey);

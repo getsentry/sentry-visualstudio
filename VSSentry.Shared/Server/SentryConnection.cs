@@ -24,7 +24,10 @@ namespace VSSentry.Shared.Server
         {
             _options = options;
             ProjectId = projectId;
-            ConfigureClient();
+            if(_options != null)
+            {
+                ConfigureClient();
+            }
         }
 
         public event AsyncEventHandler OptionsChanged;

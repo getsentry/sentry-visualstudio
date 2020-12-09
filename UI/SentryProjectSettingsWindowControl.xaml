@@ -31,9 +31,9 @@
             <TextBlock Margin="10, 5" HorizontalAlignment="Left" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironment111PercentFontSizeStyleKey}}">Visual Studio Project</TextBlock>
             <TextBlock Margin="10, 5" Padding="5" HorizontalAlignment="Stretch" Name="ProjectName" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironment90PercentFontSizeStyleKey}}" Text="RoyalRoad.Core.Shared"></TextBlock>
             <TextBlock Margin="10, 5" HorizontalAlignment="Left" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironment111PercentFontSizeStyleKey}}">Server URL</TextBlock>
-            <TextBox Margin="10, 5" Padding="5" HorizontalAlignment="Stretch" Name="ServerUrl" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBoxStyleKey}}"></TextBox>
+            <TextBox Text="https://sentry.io/" Margin="10, 5" Padding="5" HorizontalAlignment="Stretch" Name="ServerUrl" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBoxStyleKey}}"></TextBox>
             <TextBlock Margin="10, 5" HorizontalAlignment="Left" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironment111PercentFontSizeStyleKey}}">Organization</TextBlock>
-            <TextBox Margin="10, 5" Padding="5" HorizontalAlignment="Stretch" Name="Organization" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBoxStyleKey}}"></TextBox>
+            <TextBox Text="sentry" Margin="10, 5" Padding="5" HorizontalAlignment="Stretch" Name="Organization" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBoxStyleKey}}"></TextBox>
             <TextBlock Margin="10, 5" HorizontalAlignment="Left" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironment111PercentFontSizeStyleKey}}">Project ID</TextBlock>
             <TextBox Margin="10, 5" Padding="5" HorizontalAlignment="Stretch" Name="SentryProjectID" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBoxStyleKey}}"></TextBox>
             <TextBlock Margin="10, 5" HorizontalAlignment="Left" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironment111PercentFontSizeStyleKey}}">API Key</TextBlock>
