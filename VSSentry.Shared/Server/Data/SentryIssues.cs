@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace VSSentry.Shared.Server
+namespace VSSentry.Shared.Server.Data
 {
     [Serializable]
     public class SentryIssues

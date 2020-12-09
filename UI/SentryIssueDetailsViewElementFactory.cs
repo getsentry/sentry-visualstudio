@@ -4,7 +4,7 @@ using System.Windows;
 using Microsoft.VisualStudio.Text.Adornments;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Utilities;
-using VSSentry.Shared.Server;
+using VSSentry.Shared.Server.Data;
 
 namespace VSSentry.UI
 {
@@ -15,6 +15,6 @@ namespace VSSentry.UI
     internal class ViewElementFactory : IViewElementFactory
     {
         public TView CreateViewElement<TView>(ITextView textView, object model) where TView : class
-            => new SentryIssueDetails{ DataContext = (SentryIssues)model } as TView;
+            => new VSSentry.UI.SentryIssueDetails{ DataContext = (SentryIssues)model } as TView;
     }
 }

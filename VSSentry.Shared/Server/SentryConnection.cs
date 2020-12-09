@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -9,6 +10,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using VSSentry.Shared.Options;
+using VSSentry.Shared.Server.Data;
 
 namespace VSSentry.Shared.Server
 {
@@ -28,6 +30,7 @@ namespace VSSentry.Shared.Server
         public event AsyncEventHandler OptionsChanged;
 
         public Uri ApiPath => new Uri(ServerUri, $"/api/0/organizations/{Organization}/issues/");
+        public Uri BaseApiPath => new Uri(ServerUri, $"/api/0/issues/");
         public string SentryProject => _options.Project;
         public string Server => _options.ServerUrl;
         public string Organization => _options.Organization;
@@ -46,18 +49,115 @@ namespace VSSentry.Shared.Server
 
         public async Task<IEnumerable<SentryIssue>> GetIssues(string method)
         {
-            if(_options == null)
+            if (_options == null)
             {
                 return new SentryIssue[0];
             }
             var queryParams = $"limit=25&project={SentryProject}&query=%22{method}%22&shortIdLookup=1&statsPeriod=14d";
-            
+
             var url = $"{ApiPath}?{queryParams}";
             Logging.LogCL($"Sending GET: {url}");
             var result = await _httpClient.GetStringAsync(url);
             var array = JsonConvert.DeserializeObject<SentryIssue[]>(result);
             return array;
         }
+
+
+        public async Task<SentryIssueDetails> GetIssueDetails(string id)
+        {
+            if (_options == null)
+            {
+                return default;
+            }
+
+            var url = $"{BaseApiPath}{id}/";
+            Logging.LogCL($"Sending GET: {url}");
+            try
+            {
+                var result = await _httpClient.GetStringAsync(url);
+                var details = JsonConvert.DeserializeObject<SentryIssueDetails>(result);
+                details.Connection = this;
+                return details;
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine($"Url: {url}");
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+
+        public async Task<SentryEvent> GetIssueLatestEvent(string id)
+        {
+            if (_options == null)
+            {
+                return default;
+            }
+
+            var url = $"{BaseApiPath}{id}/events/latest/";
+            Logging.LogCL($"Sending GET: {url}");
+            try
+            {
+                var result = await _httpClient.GetStringAsync(url);
+                var details = JsonConvert.DeserializeObject<SentryEvent>(result);
+                return details;
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine($"Url: {url}");
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public async Task<SentryEvent> GetIssueEvent(SentryIssueDetails issue, string eventId)
+        {
+            if (_options == null)
+            {
+                return default;
+            }
+            
+            var url = new Uri(ServerUri, $"/api/0/projects/{Organization}/{issue.project.slug}/events/{eventId}/");
+            Logging.LogCL($"Sending GET: {url}");
+            try
+            {
+                var result = await _httpClient.GetStringAsync(url);
+                var details = JsonConvert.DeserializeObject<SentryEvent>(result);
+                return details;
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine($"Url: {url}");
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public async Task<SentryEventListItem[]> GetIssueEvents(string id)
+        {
+            if(_options == null)
+            {
+                return default;
+            }
+
+            var url = $"{BaseApiPath}{id}/events/?limit=50&query=";
+            Logging.LogCL($"Sending GET: {url}");
+            Logging.LogCL($"Sending GET: {url}");
+            try
+            {
+                var result = await _httpClient.GetStringAsync(url);
+                var details = JsonConvert.DeserializeObject<SentryEventListItem[]>(result);
+                return details;
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine($"Url: {url}");
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }
+
 
         public string GetUrl()
         {
@@ -79,7 +179,7 @@ namespace VSSentry.Shared.Server
             options.SaveOptions(ProjectId);
             _options = options;
             ConfigureClient();
-            if(OptionsChanged != null)
+            if (OptionsChanged != null)
             {
                 await OptionsChanged?.InvokeAsync(this, default);
             }

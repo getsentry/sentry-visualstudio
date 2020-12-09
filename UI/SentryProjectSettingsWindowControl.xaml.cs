@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using VSSentry.Shared.Options;
 using VSSentry.Shared.Server;
 
-namespace VSSentry
+namespace VSSentry.UI
 {
     /// <summary>
     /// Interaction logic for SentryProjectSettingsWindowControl.

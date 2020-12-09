@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using VSSentry.Shared;
+using VSSentry.UI;
 using IServiceProvider = System.IServiceProvider;
 using Task = System.Threading.Tasks.Task;
 
@@ -34,6 +35,7 @@ namespace VSSentry
     [InstalledProductRegistration("Sentry CodeLens", "CodeLens integration that pulls data from sentry.io (hosted or on-premises) to display a quick view of exceptions over methods.", "1.0.0.0")]
     [Guid(GuidAndCmdID.PackageGuidString)]
     [ProvideBindingPath]
+    [ProvideToolWindow(typeof(SentryIssueDetailsWindow), Style = VsDockStyle.Tabbed, Window = "DocumentWell")]
     public sealed class VSSentryPackage : AsyncPackage
     {
 
@@ -64,6 +66,7 @@ namespace VSSentry
                 Logging.LogVS(ex);
                 throw;
             }
+            await SentryIssueDetailsWindowCommand.InitializeAsync(this);
         }
 
         #endregion

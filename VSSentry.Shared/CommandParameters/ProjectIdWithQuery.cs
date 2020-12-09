@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VSSentry.Shared
+namespace VSSentry.Shared.CommandParameters
 {
     public class ProjectIdWithQuery
     {

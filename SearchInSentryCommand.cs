@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
-using VSSentry.Shared;
+using VSSentry.Shared.CommandParameters;
 using Task = System.Threading.Tasks.Task;
 
 namespace VSSentry

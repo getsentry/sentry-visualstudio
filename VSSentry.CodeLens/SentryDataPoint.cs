@@ -12,7 +12,9 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using VSSentry.Shared;
+using VSSentry.Shared.CommandParameters;
 using VSSentry.Shared.Server;
+using VSSentry.Shared.Server.Data;
 
 namespace VSSentry
 {
@@ -38,7 +40,7 @@ namespace VSSentry
         };
         private static readonly CodeLensDetailEntryCommand openInSentryCommand = new CodeLensDetailEntryCommand
         {
-            CommandSet = new Guid("FD3AA9D2-6CF8-46F4-879C-DF3C38C07B9C"),
+            CommandSet = new Guid("dfc6d6e0-8b8c-47a0-8386-f88fa4a2f810"),
             CommandId = 256,
             CommandName = "Sentry.Open"
         };

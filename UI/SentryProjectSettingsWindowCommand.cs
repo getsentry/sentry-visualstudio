@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using VSSentry.Shared.Options;
 using Task = System.Threading.Tasks.Task;
 
-namespace VSSentry
+namespace VSSentry.UI
 {
     /// <summary>
     /// Command handler
@@ -130,11 +130,11 @@ namespace VSSentry
                 //    guid = x.GetGuidProperty((uint)VSConstants.VSITEMID.Root, (int)__VSHPROPID.VSHPROPID_ProjectIDGuid, out var y) == VSConstants.S_OK ? y : Guid.Empty
                 //}).ToList();
 
-                
+
                 //if(guids.Any(w => w.guid != Guid.Empty))
                 //{
                 //    var projectId = guids.First(x => x.guid != Guid.Empty).guid;
-                
+
                 //    if(projectId != null)
                 //    {
                 //        projectWindow.ProjectId = projectId;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VSSentry.Shared.Server.Data;
 
 namespace VSSentry.Shared.Server
 {
@@ -39,7 +40,7 @@ namespace VSSentry.Shared.Server
         public Statusdetails statusDetails { get; set; }
         public DateTime lastSeen { get; set; }
     }
-    
+
     [Serializable]
     public class Lifetime
     {
@@ -49,13 +50,14 @@ namespace VSSentry.Shared.Server
         public DateTime firstSeen { get; set; }
         public int userCount { get; set; }
     }
-    
+
     [Serializable]
     public class Stats
     {
+        public int[][] _30d { get; set; }
         public int[][] _24h { get; set; }
     }
-    
+
     [Serializable]
     public class Filtered
     {
@@ -65,7 +67,7 @@ namespace VSSentry.Shared.Server
         public DateTime firstSeen { get; set; }
         public int userCount { get; set; }
     }
-    
+
     [Serializable]
     public class Metadata
     {
@@ -73,15 +75,6 @@ namespace VSSentry.Shared.Server
         public string type { get; set; }
         public string value { get; set; }
         public string filename { get; set; }
-    }
-    
-    [Serializable]
-    public class Project
-    {
-        public string platform { get; set; }
-        public string slug { get; set; }
-        public string id { get; set; }
-        public string name { get; set; }
     }
 
     [Serializable]

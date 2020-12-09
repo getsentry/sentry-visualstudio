@@ -56,18 +56,25 @@
     <Compile Include="Options\SentryOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchInSentryCommand.cs" />
+    <Compile Include="UI\SentryIssueDetailsViewModel.cs" />
+    <Compile Include="UI\SentryIssueDetailsWindow.cs" />
+    <Compile Include="UI\SentryIssueDetailsWindowCommand.cs" />
+    <Compile Include="UI\SentryIssueDetailsWindowControl.xaml.cs">
+      <DependentUpon>SentryIssueDetailsWindowControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\SentryIssueDetails.xaml.cs">
       <DependentUpon>SentryIssueDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\SentryIssueDetailsViewElementFactory.cs" />
-    <Compile Include="SentryProjectSettingsWindow.cs" />
-    <Compile Include="SentryProjectSettingsWindowCommand.cs" />
-    <Compile Include="SentryProjectSettingsWindowControl.xaml.cs">
+    <Compile Include="UI\SentryProjectSettingsWindow.cs" />
+    <Compile Include="UI\SentryProjectSettingsWindowCommand.cs" />
+    <Compile Include="UI\SentryProjectSettingsWindowControl.xaml.cs">
       <DependentUpon>SentryProjectSettingsWindowControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="VSSentryPackage.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".editorconfig" />
     <None Include="LICENSE.md" />
     <None Include="README.md" />
     <None Include="source.extension.vsixmanifest">
@@ -128,14 +135,19 @@
     <Content Include="Resources\SearchInSentryCommand.png" />
     <Content Include="Resources\SentryCodeLensCommands.png" />
     <Content Include="Resources\SentryCodeLensProvider.png" />
+    <Content Include="Resources\SentryIssueDetailsWindowCommand.png" />
     <Content Include="Resources\SentryProjectSettingsWindowCommand.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="UI\SentryIssueDetailsWindowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\SentryIssueDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SentryProjectSettingsWindowControl.xaml">
+    <Page Include="UI\SentryProjectSettingsWindowControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

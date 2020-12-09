@@ -31,6 +31,14 @@
           <ButtonText>Search in Sentry</ButtonText>
         </Strings>
       </Button>
+      <Button guid="guidVSSentryPackageCmdSet" id="cmdidSentryIssueDetailsWindowCommand" priority="0x0100" type="Button">
+        <Parent guid="CmdSetId" id="SentryMenuGroup" />
+        <CommandFlag>AllowParams</CommandFlag> <!-- command accepts args -->
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>Show Issue Details</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
     
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
@@ -45,6 +53,7 @@
       <Bitmap guid="guidImages1" href="Resources\SentryCodeLensCommands.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
       <Bitmap guid="guidImages1" href="Resources\OpenIssueInSentryCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
       <Bitmap guid="guidImages3" href="Resources\SearchInSentryCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
+      <Bitmap guid="guidImages4" href="Resources\SentryIssueDetailsWindowCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
     </Bitmaps>
     <!--<Groups>
       <Group guid="guidVSSentryPackageCmdSet" id="SentryMenuGroup" priority="0x0600">
@@ -68,6 +77,7 @@
   
     <GuidSymbol value="{dfc6d6e0-8b8c-47a0-8386-f88fa4a2f810}" name="guidVSSentryPackageCmdSet">
       <IDSymbol value="4129" name="cmdidSentryProjectSettingsWindowCommand" />
+      <IDSymbol value="256" name="cmdidSentryIssueDetailsWindowCommand" />
     </GuidSymbol>
   
     <GuidSymbol value="{72a72f88-923e-48ec-86be-ae30d08d3b72}" name="guidImages2">
@@ -85,6 +95,15 @@
     </GuidSymbol>
   
     <GuidSymbol value="{c87b7745-f7b6-4c1f-bb79-b1351c5b9813}" name="guidImages3">
+      <IDSymbol name="bmpPic1" value="1" />
+      <IDSymbol name="bmpPic2" value="2" />
+      <IDSymbol name="bmpPicSearch" value="3" />
+      <IDSymbol name="bmpPicX" value="4" />
+      <IDSymbol name="bmpPicArrows" value="5" />
+      <IDSymbol name="bmpPicStrikethrough" value="6" />
+    </GuidSymbol>
+  
+    <GuidSymbol value="{de391734-01af-47e4-8f6f-f00b516e81aa}" name="guidImages4">
       <IDSymbol name="bmpPic1" value="1" />
       <IDSymbol name="bmpPic2" value="2" />
       <IDSymbol name="bmpPicSearch" value="3" />

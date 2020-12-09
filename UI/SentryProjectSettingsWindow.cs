@@ -6,7 +6,7 @@ using System;
 using System.Runtime.InteropServices;
 using VSSentry.Shared.Options;
 
-namespace VSSentry
+namespace VSSentry.UI
 {
     /// <summary>
     /// This class implements the tool window exposed by this package and hosts a user control.

@@ -1,16 +1,19 @@
 ﻿using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.ComponentModel.Design;
-using System.Diagnostics;
+using System.Globalization;
+using System.Threading;
+using System.Threading.Tasks;
 using VSSentry.Shared.CommandParameters;
 using Task = System.Threading.Tasks.Task;
 
-namespace VSSentry
+namespace VSSentry.UI
 {
     /// <summary>
     /// Command handler
     /// </summary>
-    internal sealed class OpenIssueInSentryCommand
+    internal sealed class SentryIssueDetailsWindowCommand
     {
         /// <summary>
         /// Command ID.
@@ -20,7 +23,7 @@ namespace VSSentry
         /// <summary>
         /// Command menu group (command set GUID).
         /// </summary>
-        public static readonly Guid CommandSet = new Guid("fd3aa9d2-6cf8-46f4-879c-df3c38c07b9c");
+        public static readonly Guid CommandSet = new Guid("dfc6d6e0-8b8c-47a0-8386-f88fa4a2f810");
 
         /// <summary>
         /// VS Package that provides this command, not null.
@@ -28,12 +31,12 @@ namespace VSSentry
         private readonly AsyncPackage package;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OpenIssueInSentryCommand"/> class.
+        /// Initializes a new instance of the <see cref="SentryIssueDetailsWindowCommand"/> class.
         /// Adds our command handlers for menu (commands must exist in the command table file)
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
         /// <param name="commandService">Command service to add command to, not null.</param>
-        private OpenIssueInSentryCommand(AsyncPackage package, OleMenuCommandService commandService)
+        private SentryIssueDetailsWindowCommand(AsyncPackage package, OleMenuCommandService commandService)
         {
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
@@ -46,7 +49,7 @@ namespace VSSentry
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static OpenIssueInSentryCommand Instance
+        public static SentryIssueDetailsWindowCommand Instance
         {
             get;
             private set;
@@ -69,31 +72,37 @@ namespace VSSentry
         /// <param name="package">Owner package, not null.</param>
         public static async Task InitializeAsync(AsyncPackage package)
         {
-            // Switch to the main thread - the call to AddCommand in OpenIssueInSentryCommand's constructor requires
+            // Switch to the main thread - the call to AddCommand in SentryIssueDetailsWindowCommand's constructor requires
             // the UI thread.
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
-            OleMenuCommandService commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
-            Instance = new OpenIssueInSentryCommand(package, commandService);
+            OleMenuCommandService commandService = await package.GetServiceAsync((typeof(IMenuCommandService))) as OleMenuCommandService;
+            Instance = new SentryIssueDetailsWindowCommand(package, commandService);
         }
 
         /// <summary>
-        /// This function is the callback used to execute the command when the menu item is clicked.
-        /// See the constructor to see how the menu item is associated with this function using
-        /// OleMenuCommandService service and MenuCommand class.
+        /// Shows the tool window when the menu item is clicked.
         /// </summary>
-        /// <param name="sender">Event sender.</param>
-        /// <param name="e">Event args.</param>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event args.</param>
         private void Execute(object sender, OleMenuCmdEventArgs e)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            if (e.InValue is IssueReference arg)
+            this.package.JoinableTaskFactory.RunAsync(async delegate
             {
-                var connection = Shared.Server.SentryConnection.GetCurrent(arg.ProjectId);
-                var url = connection.GetUrlForIssue(arg.IssueId);
-                Process.Start(url);
-            }
+                ToolWindowPane window = await this.package.ShowToolWindowAsync(typeof(SentryIssueDetailsWindow), 0, true, this.package.DisposalToken);
+                if ((null == window) || (null == window.Frame))
+                {
+                    throw new NotSupportedException("Cannot create tool window");
+                }
+
+                if(e.InValue is IssueReference arg && window is SentryIssueDetailsWindow windowPane)
+                {
+                    var connection = Shared.Server.SentryConnection.GetCurrent(arg.ProjectId);
+                    var vm = (SentryIssueDetailsViewModel) windowPane.ContentControl.DataContext;
+                    vm.Connection = connection;
+                    await vm.LoadData(arg);
+                }
+            });
         }
     }
 }

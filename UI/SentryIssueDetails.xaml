@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:VSSentry"
+             xmlns:local="clr-namespace:VSSentry.UI"
              xmlns:model="clr-namespace:VSSentry.Shared.Server;assembly=VSSentry.Shared"
              d:DataContext="{d:DesignInstance Type=model:SentryIssues}"
              mc:Ignorable="d" 
