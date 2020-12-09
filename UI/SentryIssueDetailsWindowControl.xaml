@@ -205,9 +205,9 @@
                             </Grid>
                             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
                                 <Button Style="{DynamicResource {x:Static vsshell:VsResourceKeys.ButtonStyleKey}}" Command="{Binding SentryIssue.OpenInBrowserCommand}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="Open in Sentry"/>
-                                        </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Open in Sentry"/>
+                                    </StackPanel>
                                 </Button>
                             </StackPanel>
                         </Grid>

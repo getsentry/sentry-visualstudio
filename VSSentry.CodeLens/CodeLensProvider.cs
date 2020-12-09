@@ -24,7 +24,9 @@ namespace VSSentry.CodeLens
         {
             if (descriptor.Kind == CodeElementKinds.Method)
             {
-                return true;
+                var projectId = descriptor.ProjectGuid;
+                var connection = Shared.Server.SentryConnection.GetCurrent(projectId);
+                return connection.IsEnabled;
             }
             return false;
         }
