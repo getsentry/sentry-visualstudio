@@ -9,5 +9,6 @@ It currently only supports C#. PR for other languages is welcome.
 * Visual Studio 2017 or 2019
 
 # TODO:
-[] Figure out why the custom CodeLens UI via `IViewFactory` doesn't work
-[] Either cache namespaces or only read the source files up to the namespace definition to reduce unnecessary IO
+- [ ] Figure out why the custom CodeLens UI via `IViewFactory` doesn't work
+- [ ] Either cache namespaces or only read the source files up to the namespace definition to reduce unnecessary IO
+- [ ] Add screenshots
