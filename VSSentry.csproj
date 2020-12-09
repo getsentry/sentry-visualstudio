@@ -75,6 +75,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
+    <Content Include="LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="LICENSE.md" />
     <None Include="README.md" />
     <None Include="source.extension.vsixmanifest">
@@ -127,11 +131,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\sentry-wordmark-light-200x60.png" />
-    <Content Include="Resources\logo.png">
+    <Content Include="Resources\icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Resources\OpenIssueInSentryCommand.png" />
+    <Content Include="Resources\preview.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Resources\SearchInSentryCommand.png" />
     <Content Include="Resources\SentryCodeLensCommands.png" />
     <Content Include="Resources\SentryCodeLensProvider.png" />
