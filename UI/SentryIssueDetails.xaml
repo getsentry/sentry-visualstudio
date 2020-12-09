@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="VSSentry.UI.SentryIssueDetails"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VSSentry"
+             xmlns:model="clr-namespace:VSSentry.Shared.Server;assembly=VSSentry.Shared"
+             d:DataContext="{d:DesignInstance Type=model:SentryIssues}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <ListView ItemsSource="{Binding Issues}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.RowSpan="3">
+                            <TextBlock FontSize="18" FontWeight="Bold" Text="{Binding count}" Padding="5,0,0,0"/>
+                        </StackPanel>
+                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding metadata.type}"/>
+                        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding metadata.value}"/>
+                        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2">
+                            <TextBlock Text="Open in Sentry" TextDecorations="Underline" Foreground="Blue" Cursor="Hand"/>
+                            <TextBlock Text="|"/>
+                            <TextBlock Text="Open in VS" TextDecorations="Underline" Foreground="Blue" Cursor="Hand"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>
