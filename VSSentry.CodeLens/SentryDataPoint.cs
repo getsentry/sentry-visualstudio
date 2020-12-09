@@ -69,10 +69,10 @@ namespace VSSentry
             var @class = split.First().Trim();
             var method = split.Last().Trim();
 
-            query = $"{ns}.{@class} in {method}";
+            query = $"stack.module:{ns}.{@class} stack.function:{method}";
 
             Logging.LogCL($"Sentry Query: {query}");
-            Data = (await _sentryConnection.GetIssues($"{ns}.{@class}%20in%20{method}")).ToList();
+            Data = (await _sentryConnection.GetIssues($"stack.module:{ns}.{@class}+stack.function:{method}")).ToList();
 
             int errors = Data.Sum(x => int.TryParse(x.count, out var i) ? i : 0);
             return new CodeLensDataPointDescriptor()

@@ -56,7 +56,7 @@ namespace VSSentry.Shared.Server
             {
                 return new SentryIssue[0];
             }
-            var queryParams = $"limit=25&project={SentryProject}&query=%22{method}%22&shortIdLookup=1&statsPeriod=14d";
+            var queryParams = $"limit=25&project={SentryProject}&query={method}&shortIdLookup=1&statsPeriod=14d";
 
             var url = $"{ApiPath}?{queryParams}";
             Logging.LogCL($"Sending GET: {url}");
