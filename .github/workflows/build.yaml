@@ -17,7 +17,7 @@ jobs:
       - uses: microsoft/setup-msbuild@v1.0.2
       - name: Build with MSBuild
         run: msbuild VSSentry.sln -p:Configuration=Release
-      - name: Artifacts
+      - name: VSSentry.vsix
         uses: actions/upload-artifact@v2
         with:
           name: Artifact
