@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using VSSentry.Helpers;
 using VSSentry.Shared;
+using VSSentry.Shared.Helpers;
 using VSSentry.UI;
 using IServiceProvider = System.IServiceProvider;
 using Task = System.Threading.Tasks.Task;
@@ -64,9 +65,8 @@ namespace VSSentry
                 await OpenIssueInSentryCommand.InitializeAsync(this).ConfigureAwait(false);
                 await SearchInSentryCommand.InitializeAsync(this).ConfigureAwait(false);
                 
-            
-                EnvDteHelper.ComponentModel = await GetServiceAsync(typeof(SComponentModel)) as IComponentModel;
-                EnvDteHelper.Dte = await GetServiceAsync(typeof(DTE)) as DTE;
+                var dte = await GetServiceAsync(typeof(DTE)) as DTE;
+                DTEHelper.Instance = DTEHelper.Instance ?? new DteHelper(dte);
             }
             catch (Exception ex)
             {

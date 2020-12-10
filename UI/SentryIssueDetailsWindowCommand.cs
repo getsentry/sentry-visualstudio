@@ -5,6 +5,7 @@ using System.ComponentModel.Design;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using VSSentry.Models;
 using VSSentry.Shared.CommandParameters;
 using Task = System.Threading.Tasks.Task;
 

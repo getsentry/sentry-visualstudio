@@ -153,7 +153,7 @@
                             <TextBlock Grid.Row="5" Grid.Column="0" Margin="10" Text="First Seen" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
                             <TextBox Grid.Row="5" Grid.Column="1" Padding="10" Text="{Binding SentryIssue.firstSeen}"></TextBox>
                             <TextBlock Grid.Row="6" Grid.Column="0" Margin="10" Text="Stacktrace" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
-                            <ui:StackTraceEditor 
+                            <!--<ui:StackTraceEditor 
                                 Grid.Row="6" 
                                 Grid.Column="1" 
                                 Margin="10"
@@ -162,32 +162,38 @@
                                 MaxHeight="300"
                                 Background="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUIBackgroundKey}}"
                                 Foreground="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUITextKey}}"
-                                Stacktrace="{Binding DataContext.SentryEvent.Stacktrace.StackTraceAsString, ElementName=SentryIssueDetailsWindow}"/>
-                            <!--<ItemsControl Grid.Row="6" Grid.Column="1" Margin="10" ItemsSource="{Binding SentryEvent.Stacktrace.FramesSortedInverse}">
+                                Stacktrace="{Binding DataContext.SentryEvent.Stacktrace.StackTraceAsString, ElementName=SentryIssueDetailsWindow}"/>-->
+                            <ItemsControl Grid.Row="6" Grid.Column="1" Margin="10" ItemsSource="{Binding SentryEvent.Stacktrace.FramesSortedInverse}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
                                             <StackPanel.Resources>
-                                                <Style TargetType="TextBox">
+                                                <Style TargetType="Button">
                                                     <Setter Property="Background" Value="Transparent"/>
-                                                    <Setter Property="IsReadOnly" Value="True"/>
-                                                    <Setter Property="TextWrapping" Value="Wrap"/>
                                                     <Setter Property="BorderThickness" Value="0"/>
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                                <Border Background="{TemplateBinding Background}">
+                                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                </Border>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
                                                     <Setter Property="Foreground" Value="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUITextKey}}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding Clickable}" Value="True">
                                                             <Setter Property="Foreground" Value="{DynamicResource {x:Static vsshell:VsBrushes.ControlLinkTextKey}}"/>
                                                             <Setter Property="Cursor" Value="Hand"/>
-                                                            <Setter Property="TextDecorations" Value="Underline"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </StackPanel.Resources>
-                                            <TextBox Text="{Binding Text, Mode=OneWay}"/>
+                                            <Button Command="{Binding GoToMethodCommand}" Content="{Binding Text, Mode=OneWay}"></Button>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
-                            </ItemsControl>-->
+                            </ItemsControl>
                             <StackPanel Grid.Row="7" Grid.ColumnSpan="2" Orientation="Vertical" Margin="10">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox Text="{Binding SentryEvent.Request.method}" FontWeight="Bold"/>

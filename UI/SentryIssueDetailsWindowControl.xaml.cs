@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
-using VSSentry.Shared.Server.Data;
+using VSSentry.Models;
 
 namespace VSSentry.UI
 {

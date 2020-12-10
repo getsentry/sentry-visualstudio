@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="CommandParameters\IssueReference.cs" />
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Helpers\IDTEHelper.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="Options\SentryProjectOptions.cs" />
     <Compile Include="CommandParameters\ProjectIdWithQuery.cs" />
@@ -117,6 +118,7 @@
     <Analyzer Include="..\packages\Microsoft.VisualStudio.Threading.Analyzers.16.8.55\analyzers\vb\Microsoft.VisualStudio.Threading.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.VisualStudio.Threading.Analyzers.16.8.55\analyzers\vb\Microsoft.VisualStudio.Threading.Analyzers.VisualBasic.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.VisualStudio.Threading.Analyzers.16.8.55\build\Microsoft.VisualStudio.Threading.Analyzers.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.Threading.Analyzers.16.8.55\build\Microsoft.VisualStudio.Threading.Analyzers.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

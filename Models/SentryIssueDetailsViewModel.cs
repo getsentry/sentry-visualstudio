@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using VSSentry.Shared;
@@ -11,7 +9,7 @@ using VSSentry.Shared.CommandParameters;
 using VSSentry.Shared.Server;
 using VSSentry.Shared.Server.Data;
 
-namespace VSSentry.UI
+namespace VSSentry.Models
 {
     public class SentryIssueDetailsViewModel : INotifyPropertyChanged
     {
@@ -21,12 +19,12 @@ namespace VSSentry.UI
         private bool _isEventListLoading;
         private bool _isError;
         private SentryEvent _sentryEvent;
-        private Shared.Server.Data.SentryIssueDetails _sentryIssue;
+        private SentryIssueDetails _sentryIssue;
         private string _errorMessage;
         private SentryEventListItem[] eventList;
         private SentryEventListItem _selectedEvent;
 
-        public Shared.Server.Data.SentryIssueDetails SentryIssue
+        public SentryIssueDetails SentryIssue
         {
             get { return _sentryIssue; }
             set
@@ -128,7 +126,7 @@ namespace VSSentry.UI
         {
             IsLoading = true;
         }
-        
+
         public Visibility LoaderVisible => Initialized ? Visibility.Visible : Visibility.Collapsed;
         public Visibility LoaderTooltipVisible => !Initialized ? Visibility.Visible : Visibility.Collapsed;
         public Visibility LoadingVisible => IsLoading ? Visibility.Visible : Visibility.Collapsed;
@@ -151,7 +149,7 @@ namespace VSSentry.UI
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        internal void LoadData(Shared.Server.Data.SentryIssueDetails sentryIssue, SentryEvent sentryEvent)
+        internal void LoadData(SentryIssueDetails sentryIssue, SentryEvent sentryEvent)
         {
             SentryIssue = sentryIssue;
             SentryEvent = sentryEvent;
@@ -167,7 +165,7 @@ namespace VSSentry.UI
 
         internal void LoadEventList(SentryEventListItem[] eventList)
         {
-            foreach(var evt in eventList)
+            foreach (var evt in eventList)
             {
                 evt.OpenIssueCommand = new DelegateCommand((_) => OpenEvent(evt.eventID));
             }
@@ -186,7 +184,7 @@ namespace VSSentry.UI
                 SentryEvent = await SentryIssue.Connection.GetIssueEventAsync(SentryIssue, eventId);
                 IsLoadingEvent = false;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
                 IsLoadingEvent = false;
@@ -207,7 +205,7 @@ namespace VSSentry.UI
                 var eventList = await Connection.GetIssueEventsAsync(arg.IssueId);
                 LoadEventList(eventList);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LoadError(ex.Message);
             }
