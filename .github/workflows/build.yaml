@@ -15,7 +15,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-        run: nuget restore VSSentry.sln
+      - uses: nuget/setup-nuget@v1
+      - run: nuget restore VSSentry.sln
       - uses: microsoft/setup-msbuild@v1.0.2
       - name: Build with MSBuild
         run: msbuild VSSentry.sln -p:Configuration=Release
