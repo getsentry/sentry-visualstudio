@@ -1,0 +1,30 @@
+name: build
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+    branches:
+      - master
+  pull_request:
+defaults:
+  run:
+    shell: bash
+jobs:
+  build:
+    name: Build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: warrenbuckley/Setup-Nuget@v1
+      - name: Restore NuGet packages
+        run: nuget restore VSSentry.sln
+      - name: Setup MSBuild.exe
+        uses: warrenbuckley/Setup-MSBuild@v1
+      - name: Build with MSBuild
+        run: msbuild VSSentry.sln -p:Configuration=Release
+      - name: Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Artifact
+          path: |
+            ${{ github.workspace }}/bin/Release/VSSentry.vsix
