@@ -17,9 +17,9 @@ jobs:
       - uses: microsoft/setup-msbuild@v1.0.2
       - name: Build with MSBuild
         run: msbuild VSSentry.sln -p:Configuration=Release
-      - name: VSSentry.vsix
+      - name: Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: Artifact
+          name: VSSentry.vsix
           path: |
             ${{ github.workspace }}/bin/Release/VSSentry.vsix
