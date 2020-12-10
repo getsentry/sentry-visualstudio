@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio;
+﻿using EnvDTE;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -6,6 +8,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
+using VSSentry.Helpers;
 using VSSentry.Shared;
 using VSSentry.UI;
 using IServiceProvider = System.IServiceProvider;
@@ -60,6 +63,10 @@ namespace VSSentry
                 await SentryProjectSettingsWindowCommand.InitializeAsync(this).ConfigureAwait(false);
                 await OpenIssueInSentryCommand.InitializeAsync(this).ConfigureAwait(false);
                 await SearchInSentryCommand.InitializeAsync(this).ConfigureAwait(false);
+                
+            
+                EnvDteHelper.ComponentModel = await GetServiceAsync(typeof(SComponentModel)) as IComponentModel;
+                EnvDteHelper.Dte = await GetServiceAsync(typeof(DTE)) as DTE;
             }
             catch (Exception ex)
             {

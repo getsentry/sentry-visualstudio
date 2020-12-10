@@ -13,5 +13,9 @@ namespace VSSentry.Shared.Server.Data
         public object framesOmitted { get; set; }
         public bool hasSystemFrames { get; set; }
         public object registers { get; set; }
+
+        public Frame[] FramesSortedInverse => frames.Reverse().ToArray();
+
+        public string StackTraceAsString => string.Join("\n", frames.Reverse().Select(x => x.Text));
     }
 }

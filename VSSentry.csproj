@@ -46,7 +46,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Helpers\ClickHelper.cs" />
+    <Compile Include="Generators\FileLinkElementGenerator.cs" />
+    <Compile Include="Generators\MemberLinkElementGenerator.cs" />
     <Compile Include="GuidAndCmdID.cs" />
+    <Compile Include="Helpers\EnvDteHelper.cs" />
+    <Compile Include="Helpers\SolutionHelper.cs" />
+    <Compile Include="Models\StackTracesViewModel.cs" />
     <Compile Include="OpenIssueInSentryCommand.cs" />
     <Compile Include="Options\BaseOptionModel.cs" />
     <Compile Include="Options\BaseOptionPage.cs">
@@ -56,6 +62,7 @@
     <Compile Include="Options\SentryOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchInSentryCommand.cs" />
+    <Compile Include="UI\CustomLinkVisualLineText.cs" />
     <Compile Include="UI\LogLevelToBrushConverter.cs" />
     <Compile Include="UI\SentryIssueDetailsViewModel.cs" />
     <Compile Include="UI\SentryIssueDetailsWindow.cs" />
@@ -72,6 +79,7 @@
     <Compile Include="UI\SentryProjectSettingsWindowControl.xaml.cs">
       <DependentUpon>SentryProjectSettingsWindowControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\StackTraceEditor.cs" />
     <Compile Include="VSSentryPackage.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +115,9 @@
     </VSCTCompile>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AvalonEdit">
+      <Version>6.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.CoreUtility">
       <Version>16.8.239</Version>
     </PackageReference>

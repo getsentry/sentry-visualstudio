@@ -16,7 +16,7 @@
              d:DataContext="{d:DesignInstance Type=ui:SentryIssueDetailsViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
-             Name="MyToolWindow">
+             Name="SentryIssueDetailsWindow">
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -153,7 +153,17 @@
                             <TextBlock Grid.Row="5" Grid.Column="0" Margin="10" Text="First Seen" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
                             <TextBox Grid.Row="5" Grid.Column="1" Padding="10" Text="{Binding SentryIssue.firstSeen}"></TextBox>
                             <TextBlock Grid.Row="6" Grid.Column="0" Margin="10" Text="Stacktrace" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
-                            <ItemsControl Grid.Row="6" Grid.Column="1" Margin="10" ItemsSource="{Binding SentryEvent.Stacktrace.frames}">
+                            <ui:StackTraceEditor 
+                                Grid.Row="6" 
+                                Grid.Column="1" 
+                                Margin="10"
+                                SyntaxHighlighting="C#"
+                                WordWrap="True"
+                                MaxHeight="300"
+                                Background="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUIBackgroundKey}}"
+                                Foreground="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUITextKey}}"
+                                Stacktrace="{Binding DataContext.SentryEvent.Stacktrace.StackTraceAsString, ElementName=SentryIssueDetailsWindow}"/>
+                            <!--<ItemsControl Grid.Row="6" Grid.Column="1" Margin="10" ItemsSource="{Binding SentryEvent.Stacktrace.FramesSortedInverse}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
@@ -177,7 +187,7 @@
                                         </StackPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            </ItemsControl>-->
                             <StackPanel Grid.Row="7" Grid.ColumnSpan="2" Orientation="Vertical" Margin="10">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox Text="{Binding SentryEvent.Request.method}" FontWeight="Bold"/>

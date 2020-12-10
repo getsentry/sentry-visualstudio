@@ -41,12 +41,16 @@ namespace VSSentry.Shared.Server.Data
         public override string ToString()
         {
             var sb = new StringBuilder();
+            sb.Append("at ");
             sb.Append(module);
-            sb.Append(" at ");
+            sb.Append(".");
             sb.Append(function);
+            sb.Append("()");
             if(lineNo != null)
             {
-                sb.Append(":");
+                sb.Append(" in ");
+                sb.Append(filename.Replace("/", "\\"));
+                sb.Append(":line ");
                 sb.Append(lineNo);
             }
             return sb.ToString();
