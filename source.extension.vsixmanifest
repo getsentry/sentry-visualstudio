@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="VSSentry.af642d55-acf9-4086-b820-8035fa6a3cdb" Version="0.6" Language="en-US" Publisher="Daniel Rusznyak" />
+        <Identity Id="VSSentry.af642d55-acf9-4086-b820-8035fa6a3cdb" Version="0.7" Language="en-US" Publisher="Daniel Rusznyak" />
         <DisplayName>Sentry.io CodeLens</DisplayName>
         <Description xml:space="preserve">CodeLens integration that pulls data from sentry.io (hosted or on-premises) to display a quick view of exceptions over methods.</Description>
         <License>LICENSE.txt</License>
