@@ -56,6 +56,7 @@
     <Compile Include="Options\SentryOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchInSentryCommand.cs" />
+    <Compile Include="UI\LogLevelToBrushConverter.cs" />
     <Compile Include="UI\SentryIssueDetailsViewModel.cs" />
     <Compile Include="UI\SentryIssueDetailsWindow.cs" />
     <Compile Include="UI\SentryIssueDetailsWindowCommand.cs" />
@@ -117,6 +118,9 @@
       <Version>16.0.467</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="16.8.3038" />
+    <PackageReference Include="System.Windows.Controls.DataVisualization.Toolkit">
+      <Version>4.0.0</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="VSSentry.CodeLens\VSSentry.CodeLens.csproj">

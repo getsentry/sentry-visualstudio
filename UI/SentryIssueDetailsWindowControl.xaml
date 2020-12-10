@@ -7,7 +7,10 @@
              xmlns:sentry="clr-namespace:VSSentry;assembly=VSSentry"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:converters="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
-             xmlns:ui="clr-namespace:VSSentry.UI;assembly=VSSentry"
+             xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+             xmlns:chartingprimitives="clr-namespace:System.Windows.Controls.DataVisualization.Charting.Primitives;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+             xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+             xmlns:ui="clr-namespace:VSSentry.UI"
              Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
              Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
              d:DataContext="{d:DesignInstance Type=ui:SentryIssueDetailsViewModel}"
@@ -17,6 +20,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <ui:LogLevelToBrushConverter x:Key="LogLevelToBrushConverter"/>
             <Style TargetType="TextBox">
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="IsReadOnly" Value="True"/>
@@ -38,7 +42,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            
+
             <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Visibility="{Binding EventListLoadingVisible}" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Image Source="pack://application:,,,/VSSentry;component/Resources/sentry-wordmark-light-200x60.png" Width="200" Margin="0, 20, 0, 10" HorizontalAlignment="Center"/>
                 <ProgressBar IsIndeterminate="True" Height="20" MaxWidth="300" Margin="20"></ProgressBar>
@@ -103,18 +107,23 @@
                 </Grid>
             </Border>
             <Border Grid.Row="1" Grid.Column="1" Background="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowBackgroundKey}}" BorderBrush="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUIBorderKey}}" BorderThickness="2" Margin="0, 10, 5, 10">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
@@ -132,17 +141,19 @@
                                 </ResourceDictionary>
                             </Grid.Resources>
                             <TextBlock Grid.Row="0" Grid.Column="0" Margin="10" Text="Message" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
-                            <TextBox Grid.Row="0" Grid.Column="1" Padding="10" Text="{Binding SentryIssue.title}"></TextBox>
-                            <TextBlock Grid.Row="1" Grid.Column="0" Margin="10" Text="Culprit" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
-                            <TextBox Grid.Row="1" Grid.Column="1" Padding="10" Text="{Binding SentryIssue.culprit}"></TextBox>
-                            <TextBlock Grid.Row="2" Grid.Column="0" Margin="10" Text="Current Event Date" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
-                            <TextBox Grid.Row="2" Grid.Column="1" Padding="10" Text="{Binding SentryEvent.dateCreated}"></TextBox>
-                            <TextBlock Grid.Row="3" Grid.Column="0" Margin="10" Text="Last Seen" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
-                            <TextBox Grid.Row="3" Grid.Column="1" Padding="10" Text="{Binding SentryIssue.lastSeen}"></TextBox>
-                            <TextBlock Grid.Row="4" Grid.Column="0" Margin="10" Text="First Seen" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
-                            <TextBox Grid.Row="4" Grid.Column="1" Padding="10" Text="{Binding SentryIssue.firstSeen}"></TextBox>
-                            <TextBlock Grid.Row="5" Grid.Column="0" Margin="10" Text="Stacktrace" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
-                            <ItemsControl Grid.Row="5" Grid.Column="1" Margin="10" ItemsSource="{Binding SentryEvent.Stacktrace.frames}">
+                            <TextBox Grid.Row="0" Grid.Column="1" Padding="10" Text="{Binding SentryEvent.message}"></TextBox>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Margin="10" Text="Exception" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
+                            <TextBox Grid.Row="1" Grid.Column="1" Padding="10" Text="{Binding SentryIssue.title}"></TextBox>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Margin="10" Text="Culprit" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
+                            <TextBox Grid.Row="2" Grid.Column="1" Padding="10" Text="{Binding SentryIssue.culprit}"></TextBox>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Margin="10" Text="Current Event Date" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
+                            <TextBox Grid.Row="3" Grid.Column="1" Padding="10" Text="{Binding SentryEvent.dateCreated}"></TextBox>
+                            <TextBlock Grid.Row="4" Grid.Column="0" Margin="10" Text="Last Seen" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
+                            <TextBox Grid.Row="4" Grid.Column="1" Padding="10" Text="{Binding SentryIssue.lastSeen}"></TextBox>
+                            <TextBlock Grid.Row="5" Grid.Column="0" Margin="10" Text="First Seen" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
+                            <TextBox Grid.Row="5" Grid.Column="1" Padding="10" Text="{Binding SentryIssue.firstSeen}"></TextBox>
+                            <TextBlock Grid.Row="6" Grid.Column="0" Margin="10" Text="Stacktrace" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
+                            <ItemsControl Grid.Row="6" Grid.Column="1" Margin="10" ItemsSource="{Binding SentryEvent.Stacktrace.frames}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
@@ -167,14 +178,73 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Vertical" Margin="10">
+                            <StackPanel Grid.Row="7" Grid.ColumnSpan="2" Orientation="Vertical" Margin="10">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBox Text="GET" FontWeight="Bold"/>
-                                    <TextBox Text="{Binding SentryEvent}"/>
+                                    <TextBox Text="{Binding SentryEvent.Request.method}" FontWeight="Bold"/>
+                                    <TextBox Text="{Binding SentryEvent.Request.url}"/>
                                 </StackPanel>
                             </StackPanel>
-                            <TextBlock Grid.Row="7" Grid.ColumnSpan="2" Text="Packages" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}" Margin="10, 10, 10, 0"/>
-                            <ListBox Grid.Row="8" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.ThemedDialogListBoxStyleKey}}" ItemsSource="{Binding SentryEvent.packages}" Margin="10" Padding="10" Height="300">
+                            <TextBlock Grid.Row="8" Grid.ColumnSpan="2" Text="Breadcrumbs" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}" Margin="10, 10, 10, 5"/>
+                            <ScrollViewer Grid.Row="9" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" MaxHeight="300" Margin="10, 0">
+                                <ItemsControl ItemsSource="{Binding SentryEvent.BreadCrumbs}" Margin="10" Padding="10">
+                                    <ItemsControl.ItemContainerStyle>
+                                        <Style TargetType="ContentPresenter">
+                                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                        </Style>
+                                    </ItemsControl.ItemContainerStyle>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0, 2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Rectangle Fill="{Binding level, Converter={StaticResource LogLevelToBrushConverter}}" Width="5"  Margin="0, 0, 5, 0" VerticalAlignment="Stretch"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding message}"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                            <ItemsControl Grid.Row="10" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" ItemsSource="{Binding SentryEvent.ContextsDictionary}" Margin="10" Padding="10">
+                                <ItemsControl.ItemContainerStyle>
+                                    <Style TargetType="ContentPresenter">
+                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    </Style>
+                                </ItemsControl.ItemContainerStyle>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="{Binding Key}" FontWeight="Bold" FontSize="18" Margin="0, 10. 0. 5"/>
+                                            <ItemsControl Grid.Row="1" ItemsSource="{Binding Value}" HorizontalAlignment="Stretch">                           
+                                                <ItemsControl.ItemContainerStyle>
+                                                    <Style TargetType="ContentPresenter">
+                                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                                    </Style>
+                                                </ItemsControl.ItemContainerStyle>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="200"/>
+                                                                <ColumnDefinition/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Text="{Binding Key}"/>
+                                                            <TextBlock Text="{Binding Value}" HorizontalAlignment="Right" Grid.Column="1"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock Grid.Row="11" Grid.ColumnSpan="2" Text="Packages" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}" Margin="10, 10, 10, 0"/>
+                            <ListBox Grid.Row="12" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.ThemedDialogListBoxStyleKey}}" ItemsSource="{Binding SentryEvent.packages}" Margin="10" Padding="10" Height="300">
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="ListBoxItem">
                                         <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -195,32 +265,180 @@
                                 </ListBox.ItemTemplate>
                             </ListBox>
                         </Grid>
-                        <Grid Grid.Row="1">                            
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid Margin="10, 5">
-                                <ProgressBar IsIndeterminate="{Binding IsLoadingEvent}" Height="15" VerticalAlignment="Center"></ProgressBar>                
-                            </Grid>
-                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
-                                <Button Style="{DynamicResource {x:Static vsshell:VsResourceKeys.ButtonStyleKey}}" Command="{Binding SentryIssue.OpenInBrowserCommand}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Open in Sentry"/>
-                                    </StackPanel>
-                                </Button>
-                            </StackPanel>
+                    </ScrollViewer>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Margin="10, 5">
+                            <ProgressBar IsIndeterminate="{Binding IsLoadingEvent}" Height="15" VerticalAlignment="Center"></ProgressBar>
                         </Grid>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
+                            <Button Style="{DynamicResource {x:Static vsshell:VsResourceKeys.ButtonStyleKey}}" Command="{Binding SentryIssue.OpenInBrowserCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Open in Sentry"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
                     </Grid>
-                </ScrollViewer>                
+                </Grid>
             </Border>
-            
+
             <GridSplitter Grid.RowSpan="2" Grid.Column="2" Margin="2,0,2,0"
                   Width="5" Background="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUIBackgroundKey}}"
                   VerticalAlignment="Stretch" 
                   HorizontalAlignment="Center" />
             <Border Grid.RowSpan="2" Grid.Column="3" Background="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUIBackgroundKey}}" BorderBrush="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUIBorderKey}}" BorderThickness="2" Margin="5, 10, 10, 10">
-                <StackPanel Orientation="Vertical">                    
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Margin="10" Text="Last 24 hours" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
+                    <dvc:Chart Background="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUIBackgroundKey}}" BorderThickness="0">
+                        <dvc:Chart.Template>
+                            <ControlTemplate TargetType="{x:Type dvc:Chart}">
+                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <chartingprimitives:EdgePanel Name="ChartArea" Style="{TemplateBinding ChartAreaStyle}" Grid.Row="1" Margin="0,15,0,15" Background="{TemplateBinding Background}">
+                                            <Grid Panel.ZIndex="-1" />
+                                            <Border Panel.ZIndex="10" BorderBrush="#FF919191" BorderThickness="0" />
+                                        </chartingprimitives:EdgePanel>
+                                    </Grid>
+                                </Border>
+
+                            </ControlTemplate>
+
+                        </dvc:Chart.Template>
+                        <dvc:Chart.Axes>
+                            <dvc:DateTimeAxis Orientation="X">
+                                <dvc:DateTimeAxis.AxisLabelStyle>
+                                    <Style TargetType="Control">
+                                        <!--<Setter Property="Visibility" Value="Collapsed"/>-->
+                                        <Setter Property="FontSize" Value="8"/>
+                                        <Setter Property="LayoutTransform" >
+                                            <Setter.Value>
+                                                <RotateTransform  Angle="-45" />
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUITextKey}}"/>
+                                    </Style>
+                                </dvc:DateTimeAxis.AxisLabelStyle>
+                            </dvc:DateTimeAxis>
+                        </dvc:Chart.Axes>
+                        <dvc:Chart.Series>
+                            <dvc:ColumnSeries ItemsSource="{Binding SentryIssue.stats.OneDayData}" 
+                                           DependentValuePath="Value" 
+                                           IndependentValuePath="Date" Background="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUIBackgroundKey}}">
+                                <dvc:ColumnSeries.LegendItemStyle >
+                                    <Style TargetType="dvc:LegendItem">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </Style>
+                                </dvc:ColumnSeries.LegendItemStyle>
+                                <dvc:ColumnSeries.DependentRangeAxis>
+                                    <dvc:LinearAxis Orientation="Y"/>
+                                </dvc:ColumnSeries.DependentRangeAxis>
+                                <dvc:ColumnSeries.Style>
+                                    <Style TargetType="dvc:ColumnSeries">
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static vsshell:VsBrushes.ControlLinkTextKey}}"/>
+                                    </Style>
+                                </dvc:ColumnSeries.Style>
+                                <dvc:ColumnSeries.DataPointStyle>
+                                    <Style TargetType="dvc:ColumnDataPoint">
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static vsshell:VsBrushes.ControlLinkTextKey}}"/>
+                                        <Setter Property="Padding" Value="0"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="dvc:ColumnDataPoint">
+                                                    <Grid>
+                                                        <Rectangle Fill="{TemplateBinding Background}"/>
+                                                        <!--<Canvas >
+                                                         <TextBlock FontWeight="Bold" Text="{Binding Value}" Margin="15,-3,0,0"  />
+                                                     </Canvas>-->
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </dvc:ColumnSeries.DataPointStyle>
+                            </dvc:ColumnSeries>
+                        </dvc:Chart.Series>
+                    </dvc:Chart>
+                    <TextBlock Margin="10" Text="Last 30 days" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
+                    <dvc:Chart Background="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUIBackgroundKey}}" BorderThickness="0">
+                        <dvc:Chart.Template>
+                            <ControlTemplate TargetType="{x:Type dvc:Chart}">
+                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <chartingprimitives:EdgePanel Name="ChartArea" Style="{TemplateBinding ChartAreaStyle}" Grid.Row="1" Margin="0,15,0,15" Background="{TemplateBinding Background}">
+                                            <Grid Panel.ZIndex="-1" />
+                                            <Border Panel.ZIndex="10" BorderBrush="#FF919191" BorderThickness="0" />
+                                        </chartingprimitives:EdgePanel>
+                                    </Grid>
+                                </Border>
+
+                            </ControlTemplate>
+
+                        </dvc:Chart.Template>
+                        <dvc:Chart.Axes>
+                            <dvc:DateTimeAxis Orientation="X">
+                                <dvc:DateTimeAxis.AxisLabelStyle>
+                                    <Style TargetType="Control">
+                                        <!--<Setter Property="Visibility" Value="Collapsed"/>-->
+                                        <Setter Property="FontSize" Value="8"/>
+                                        <Setter Property="LayoutTransform" >
+                                            <Setter.Value>
+                                                <RotateTransform  Angle="-45" />
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUITextKey}}"/>
+                                    </Style>
+                                </dvc:DateTimeAxis.AxisLabelStyle>
+                            </dvc:DateTimeAxis>
+                        </dvc:Chart.Axes>
+                        <dvc:Chart.Series>
+                            <dvc:ColumnSeries ItemsSource="{Binding SentryIssue.stats.ThirtyDayChartData}" 
+                                           DependentValuePath="Value" 
+                                           IndependentValuePath="Date" Background="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUIBackgroundKey}}">
+                                <dvc:ColumnSeries.LegendItemStyle >
+                                    <Style TargetType="dvc:LegendItem">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </Style>
+                                </dvc:ColumnSeries.LegendItemStyle>
+                                <dvc:ColumnSeries.DependentRangeAxis>
+                                    <dvc:LinearAxis Orientation="Y"/>
+                                </dvc:ColumnSeries.DependentRangeAxis>
+                                <dvc:ColumnSeries.Style>
+                                    <Style TargetType="dvc:ColumnSeries">
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static vsshell:VsBrushes.ControlLinkTextKey}}"/>
+                                    </Style>
+                                </dvc:ColumnSeries.Style>
+                                <dvc:ColumnSeries.DataPointStyle>
+                                    <Style TargetType="dvc:ColumnDataPoint">
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static vsshell:VsBrushes.ControlLinkTextKey}}"/>
+                                        <Setter Property="Padding" Value="0"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="dvc:ColumnDataPoint">
+                                                    <Grid>
+                                                        <Rectangle Fill="{TemplateBinding Background}"/>
+                                                        <!--<Canvas >
+                                                         <TextBlock FontWeight="Bold" Text="{Binding Value}" Margin="15,-3,0,0"  />
+                                                     </Canvas>-->
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </dvc:ColumnSeries.DataPointStyle>
+                            </dvc:ColumnSeries>
+                        </dvc:Chart.Series>
+                    </dvc:Chart>
                     <TextBlock Grid.Row="4" Grid.Column="0" Margin="10" Text="Tags" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"></TextBlock>
                     <ItemsControl Grid.Row="4" Grid.Column="1" Margin="10" ItemsSource="{Binding SentryEvent.tags}">
                         <ItemsControl.ItemTemplate>
@@ -238,7 +456,8 @@
         <Grid Visibility="{Binding LoadingVisible}">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <Image Source="pack://application:,,,/VSSentry;component/Resources/sentry-wordmark-light-200x60.png" Width="200" Margin="0, 20, 0, 10" HorizontalAlignment="Center"/>
-                <ProgressBar IsIndeterminate="True" Height="20" MaxWidth="300" Margin="20"></ProgressBar>
+                <ProgressBar IsIndeterminate="True" Height="20" MaxWidth="300" Margin="20" Visibility="{Binding LoaderVisible}"></ProgressBar>
+                <TextBlock HorizontalAlignment="Center" Text="Select an issue from CodeLens to get started" Visibility="{Binding LoaderTooltipVisible}"/>
             </StackPanel>
         </Grid>
         <Grid Visibility="{Binding ErrorVisible}">

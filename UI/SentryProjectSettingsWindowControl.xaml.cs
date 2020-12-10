@@ -51,12 +51,14 @@ namespace VSSentry.UI
 
         public event EventHandler Close;
 
+
         /// <summary>
         /// Handles click on the button by displaying a message box.
         /// </summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event args.</param>
-        private async void Save_Click(object sender, RoutedEventArgs e)
+        [SuppressMessage("Usage", "VSTHRD100:Avoid async void methods", Justification = "Callback method")]
+        private async void SaveClick(object sender, RoutedEventArgs e)
         {
             var serverUrl = ServerUrl.Text;
             var projectId = SentryProjectID.Text;

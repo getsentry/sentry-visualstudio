@@ -50,7 +50,7 @@ namespace VSSentry.Shared.Server
             return connection;
         }
 
-        public async Task<IEnumerable<SentryIssue>> GetIssues(string method)
+        public async Task<IEnumerable<SentryIssue>> GetIssuesAsync(string method)
         {
             if (_options == null)
             {
@@ -66,7 +66,7 @@ namespace VSSentry.Shared.Server
         }
 
 
-        public async Task<SentryIssueDetails> GetIssueDetails(string id)
+        public async Task<SentryIssueDetails> GetIssueDetailsAsync(string id)
         {
             if (_options == null)
             {
@@ -91,7 +91,7 @@ namespace VSSentry.Shared.Server
         }
 
 
-        public async Task<SentryEvent> GetIssueLatestEvent(string id)
+        public async Task<SentryEvent> GetIssueLatestEventAsync(string id)
         {
             if (_options == null)
             {
@@ -114,7 +114,7 @@ namespace VSSentry.Shared.Server
             }
         }
 
-        public async Task<SentryEvent> GetIssueEvent(SentryIssueDetails issue, string eventId)
+        public async Task<SentryEvent> GetIssueEventAsync(SentryIssueDetails issue, string eventId)
         {
             if (_options == null)
             {
@@ -137,7 +137,7 @@ namespace VSSentry.Shared.Server
             }
         }
 
-        public async Task<SentryEventListItem[]> GetIssueEvents(string id)
+        public async Task<SentryEventListItem[]> GetIssueEventsAsync(string id)
         {
             if(_options == null)
             {
@@ -169,12 +169,12 @@ namespace VSSentry.Shared.Server
 
         public string GetUrlForIssue(string issueId)
         {
-            return $"{Server}/organizations/{Organization}/issues/{issueId}/?project={SentryProject}";
+            return new Uri(ServerUri, $"/organizations/{Organization}/issues/{issueId}/?project={SentryProject}").ToString();
         }
 
         public string GetUrlForSearch(string query)
         {
-            return $"{Server}/organizations/{Organization}/issues/?project={SentryProject}&query={query}&statsPeriod=14d";
+            return new Uri(ServerUri, $"/organizations/{Organization}/issues/?project={SentryProject}&query={query}&statsPeriod=14d").ToString();
         }
 
         public async Task SaveSettingsAsync(SentryProjectOptions options)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using VSSentry.Shared.Server.Data;
 
 namespace VSSentry.Shared.Server
@@ -54,8 +55,32 @@ namespace VSSentry.Shared.Server
     [Serializable]
     public class Stats
     {
+        [JsonProperty("30d")]
         public int[][] _30d { get; set; }
+
+        [JsonProperty("24h")]
         public int[][] _24h { get; set; }
+
+        [JsonIgnore]
+        public Stat[] OneDayData => _24h?.Select(x => new Stat(x[0], x[1])).ToArray();
+
+        [JsonIgnore]
+        public Stat[] ThirtyDayChartData => _30d?.Select(x => new Stat(x[0], x[1])).ToArray();
+        public class Stat
+        {
+            public DateTime Date { get; set; }
+            public double Value { get; set; }
+            public Stat(DateTime dt, double val)
+            {
+                Date = dt;
+                Value = val;
+            }
+            public Stat(long unixTime, double val)
+            {
+                Date = DateTimeOffset.FromUnixTimeSeconds(unixTime).LocalDateTime;
+                Value = val;
+            }
+        }
     }
 
     [Serializable]

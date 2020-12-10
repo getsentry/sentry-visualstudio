@@ -39,10 +39,10 @@ namespace VSSentry.UI
             this.Content = _control;
             _control.Close += Close;
             this._serviceProvider = serviceProvider;
-            LoadAsync(_serviceProvider);
+            _ = LoadAsync(_serviceProvider);
         }        
 
-        public async void LoadAsync(IServiceProvider serviceProvider)
+        public async System.Threading.Tasks.Task LoadAsync(IServiceProvider serviceProvider)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             IsLoading = true;

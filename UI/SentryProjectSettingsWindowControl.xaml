@@ -38,7 +38,7 @@
             <TextBox Margin="10, 5" Padding="5" HorizontalAlignment="Stretch" Name="SentryProjectID" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBoxStyleKey}}"></TextBox>
             <TextBlock Margin="10, 5" HorizontalAlignment="Left" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironment111PercentFontSizeStyleKey}}">API Key</TextBlock>
             <PasswordBox Margin="10, 5" Padding="5" HorizontalAlignment="Stretch" Name="ApiKey"></PasswordBox>
-            <Button Style="{DynamicResource {x:Static vsshell:VsResourceKeys.ButtonStyleKey}}" Content="Save Changes" Click="Save_Click" Width="120" Height="30" Margin="10" Name="save_button" HorizontalAlignment="Right"/>
+            <Button Style="{DynamicResource {x:Static vsshell:VsResourceKeys.ButtonStyleKey}}" Content="Save Changes" Click="SaveClick" Width="120" Height="30" Margin="10" Name="save_button" HorizontalAlignment="Right"/>
         </StackPanel>
         <Grid Name="Loader" Visibility="Visible">
             <ProgressBar IsIndeterminate="True" VerticalAlignment="Center" Margin="10" HorizontalAlignment="Stretch" Height="20"></ProgressBar>

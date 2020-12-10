@@ -42,7 +42,13 @@ namespace VSSentry.Shared.Server.Data
         public User user { get; set; }
         public object userReport { get; set; }
         public Stacktrace Stacktrace => Array.Find(entries, x => x.type == "exception")?.data.values?.FirstOrDefault(x => x.stacktrace != null).stacktrace;
+        public EntryData.Value[] BreadCrumbs => Array.Find(entries, x => x.type == "breadcrumbs")?.data.values?.ToArray();
+        public EntryData Request => Array.Find(entries, x => x.type == "request")?.data;
         public bool HasUserData => user != null && contexts?.client_os != null;
+
+        // TODO: This is ugly, maybe just use reflection directly for this?
+        [JsonIgnore]
+        public Dictionary<string, Dictionary<string, string>> ContextsDictionary => JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(JsonConvert.SerializeObject(contexts)).Where(x => x.Value != null && x.Value.Count > 0).ToDictionary(x => x.Key, x=>x.Value);
 
         public class Tag
         {

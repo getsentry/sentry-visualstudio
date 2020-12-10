@@ -97,7 +97,8 @@ namespace VSSentry.UI
             {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                 //ToolWindowPane window = await this.package.ShowToolWindowAsync(typeof(SentryProjectSettingsWindow), 0, true, this.package.DisposalToken);
-                IVsUIShell uiShell = (IVsUIShell)await ServiceProvider.GetServiceAsync(typeof(SVsUIShell));
+                var uiShell = await ServiceProvider.GetServiceAsync(typeof(SVsUIShell)) as IVsUIShell;
+                if(uiShell == null) throw new InvalidCastException(nameof(uiShell));
                 var window = new SentryProjectSettingsWindow(package);
                 IntPtr hwnd;
                 uiShell.GetDialogOwnerHwnd(out hwnd);
@@ -153,11 +154,12 @@ namespace VSSentry.UI
 
         public static IEnumerable<IVsHierarchy> GetProjectsInSolution(IVsSolution solution, __VSENUMPROJFLAGS flags)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             if (solution == null)
                 yield break;
 
             IEnumHierarchies enumHierarchies;
-            Guid guid = Guid.Empty;
+            var guid = Guid.Empty;
             solution.GetProjectEnum((uint)flags, ref guid, out enumHierarchies);
             if (enumHierarchies == null)
                 yield break;

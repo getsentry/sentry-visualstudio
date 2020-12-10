@@ -32,6 +32,10 @@ namespace VSSentry.Shared.Server.Data
             public int threadId { get; set; }
             public string type { get; set; }
             public string value { get; set; }
+            public string message { get; set; }
+            public string level { get; set; }
+            public DateTime? timestamp { get; set; }
+            public string category { get; set; }
         }
     }
 }

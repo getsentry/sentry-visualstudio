@@ -15,6 +15,7 @@ namespace VSSentry.UI
 {
     public class SentryIssueDetailsViewModel : INotifyPropertyChanged
     {
+        private bool _initialized;
         private bool _isLoading;
         private bool _isLoadingEvent;
         private bool _isEventListLoading;
@@ -41,6 +42,19 @@ namespace VSSentry.UI
             {
                 _sentryEvent = value;
                 NotifyPropertyChanged();
+            }
+        }
+        public bool Initialized
+        {
+            get { return _initialized; }
+            set
+            {
+                _initialized = value;
+                NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(LoaderVisible));
+                NotifyPropertyChanged(nameof(LoadingVisible));
+                NotifyPropertyChanged(nameof(ContentVisible));
+                NotifyPropertyChanged(nameof(LoaderTooltipVisible));
             }
         }
         public bool IsLoading
@@ -110,8 +124,15 @@ namespace VSSentry.UI
             }
         }
 
+        public SentryIssueDetailsViewModel()
+        {
+            IsLoading = true;
+        }
+        
+        public Visibility LoaderVisible => Initialized ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility LoaderTooltipVisible => !Initialized ? Visibility.Visible : Visibility.Collapsed;
         public Visibility LoadingVisible => IsLoading ? Visibility.Visible : Visibility.Collapsed;
-        public Visibility ContentVisible => IsLoading || IsError ? Visibility.Collapsed : Visibility.Visible;
+        public Visibility ContentVisible => !Initialized || IsLoading || IsError ? Visibility.Collapsed : Visibility.Visible;
         public Visibility ErrorVisible => IsError ? Visibility.Visible : Visibility.Collapsed;
         public Visibility EventListLoadingVisible => IsEventListLoading ? Visibility.Visible : Visibility.Collapsed;
         public Visibility EventListVisible => IsEventListLoading ? Visibility.Collapsed : Visibility.Visible;
@@ -162,7 +183,7 @@ namespace VSSentry.UI
             try
             {
                 IsLoadingEvent = true;
-                SentryEvent = await SentryIssue.Connection.GetIssueEvent(SentryIssue, eventId);
+                SentryEvent = await SentryIssue.Connection.GetIssueEventAsync(SentryIssue, eventId);
                 IsLoadingEvent = false;
             }
             catch(Exception ex)
@@ -173,16 +194,17 @@ namespace VSSentry.UI
             }
         }
 
-        internal async Task LoadData(IssueReference arg)
+        internal async Task LoadDataAsync(IssueReference arg)
         {
+            Initialized = true;
             IsLoading = true;
             try
             {
-                var issue = await Connection.GetIssueDetails(arg.IssueId).ConfigureAwait(false);
-                var sentryEvent = await Connection.GetIssueLatestEvent(arg.IssueId).ConfigureAwait(false);
+                var issue = await Connection.GetIssueDetailsAsync(arg.IssueId).ConfigureAwait(false);
+                var sentryEvent = await Connection.GetIssueLatestEventAsync(arg.IssueId).ConfigureAwait(false);
                 LoadData(issue, sentryEvent);
                 IsEventListLoading = true;
-                var eventList = await Connection.GetIssueEvents(arg.IssueId);
+                var eventList = await Connection.GetIssueEventsAsync(arg.IssueId);
                 LoadEventList(eventList);
             }
             catch(Exception ex)

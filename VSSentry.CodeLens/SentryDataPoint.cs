@@ -57,22 +57,9 @@ namespace VSSentry
 
             if (!_sentryConnection.IsEnabled) return null;
 
-            // TODO: Can do way better than this via using streams and only reading until the namespace is matched
-            // it might reduce IO usage compared to reading the whole file
-            var nsMatch = _nameSpaceRegex.Match(File.ReadAllText(_descriptor.FilePath));
-            string ns = string.Empty;
-            if (nsMatch.Success)
-            {
-                ns = nsMatch.Groups[1].Value.Trim();
-            }
-            var split = _descriptor.ElementDescription.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-            var @class = split.First().Trim();
-            var method = split.Last().Trim();
+            var query = BuildIssueQuery();
 
-            query = $"stack.module:{ns}.{@class} stack.function:{method}";
-
-            Logging.LogCL($"Sentry Query: {query}");
-            Data = (await _sentryConnection.GetIssues($"stack.module:{ns}.{@class}+stack.function:{method}")).ToList();
+            Data = (await _sentryConnection.GetIssuesAsync(query)).ToList();
 
             int errors = Data.Sum(x => int.TryParse(x.count, out var i) ? i : 0);
             return new CodeLensDataPointDescriptor()
@@ -86,6 +73,12 @@ namespace VSSentry
 
         public async Task<CodeLensDetailsDescriptor> GetDetailsAsync(CodeLensDescriptorContext descriptorContext, CancellationToken token)
         {
+            if(Data == null && _sentryConnection.IsEnabled)
+            {
+                var query = BuildIssueQuery();
+                Data = (await _sentryConnection.GetIssuesAsync(query)).ToList();
+            }
+
             return new CodeLensDetailsDescriptor
             {
                 Headers = GetHeaders(),
@@ -99,6 +92,25 @@ namespace VSSentry
                     }
                 },
             };
+        }
+
+        private string BuildIssueQuery()
+        {
+            // TODO: Can do way better than this via using streams and only reading until the namespace is matched
+            // it might reduce IO usage compared to reading the whole file
+            var nsMatch = _nameSpaceRegex.Match(File.ReadAllText(_descriptor.FilePath));
+            string ns = string.Empty;
+            if (nsMatch.Success)
+            {
+                ns = nsMatch.Groups[1].Value.Trim();
+            }
+            var split = _descriptor.ElementDescription.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+            var @class = split.First().Trim();
+            var method = split.Last().Trim();
+
+            query = $"stack.module:{ns}.{@class} stack.function:{method}";
+            Logging.LogCL($"Sentry Query: {query}");
+            return query;
         }
 
         private IEnumerable<CodeLensDetailEntryDescriptor> CreateEntries(IEnumerable<SentryIssue> issues)

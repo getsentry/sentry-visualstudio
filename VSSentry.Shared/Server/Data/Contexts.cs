@@ -18,7 +18,7 @@ namespace VSSentry.Shared.Server.Data
         public ClientOs client_os { get; set; }
         public Device device { get; set; }
 
-        [JsonProperty("client-os")]
+        [JsonProperty("server-os")]
         public ServerOs serveros { get; set; }
         public Browser browser { get; set; }
     }

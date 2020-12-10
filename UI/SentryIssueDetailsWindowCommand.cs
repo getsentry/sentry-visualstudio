@@ -99,8 +99,9 @@ namespace VSSentry.UI
                 {
                     var connection = Shared.Server.SentryConnection.GetCurrent(arg.ProjectId);
                     var vm = (SentryIssueDetailsViewModel) windowPane.ContentControl.DataContext;
+                    vm.Initialized = true;
                     vm.Connection = connection;
-                    await vm.LoadData(arg);
+                    await vm.LoadDataAsync(arg);
                 }
             });
         }

@@ -20,19 +20,19 @@ namespace VSSentry.CodeLens
         public const string ProviderId = "SentryErrors";
 
 
-        public async Task<bool> CanCreateDataPointAsync(CodeLensDescriptor descriptor, CodeLensDescriptorContext descriptorContext, CancellationToken token)
+        public Task<bool> CanCreateDataPointAsync(CodeLensDescriptor descriptor, CodeLensDescriptorContext descriptorContext, CancellationToken token)
         {
             if (descriptor.Kind == CodeElementKinds.Method)
             {
                 var projectId = descriptor.ProjectGuid;
                 var connection = Shared.Server.SentryConnection.GetCurrent(projectId);
-                return connection.IsEnabled;
+                return Task.FromResult(connection.IsEnabled);
             }
-            return false;
+            return Task.FromResult(false);
         }
 
 
-        public async Task<IAsyncCodeLensDataPoint> CreateDataPointAsync(CodeLensDescriptor descriptor, CodeLensDescriptorContext descriptorContext, CancellationToken token)
+        public Task<IAsyncCodeLensDataPoint> CreateDataPointAsync(CodeLensDescriptor descriptor, CodeLensDescriptorContext descriptorContext, CancellationToken token)
         {
             var projectId = descriptor.ProjectGuid;
             var connection = Shared.Server.SentryConnection.GetCurrent(projectId);
@@ -43,7 +43,7 @@ namespace VSSentry.CodeLens
             //    _pathBases[descriptor.ProjectGuid] = pathBase;
             //}
 
-            return new SentryDataPoint(connection, descriptor);
+            return Task.FromResult<IAsyncCodeLensDataPoint>(new SentryDataPoint(connection, descriptor));
         }
 
 
