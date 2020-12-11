@@ -11,9 +11,10 @@
              xmlns:chartingprimitives="clr-namespace:System.Windows.Controls.DataVisualization.Charting.Primitives;assembly=System.Windows.Controls.DataVisualization.Toolkit"
              xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
              xmlns:ui="clr-namespace:VSSentry.UI"
+             xmlns:model="clr-namespace:VSSentry.Models"
              Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
              Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
-             d:DataContext="{d:DesignInstance Type=ui:SentryIssueDetailsViewModel}"
+             d:DataContext="{d:DesignInstance Type=model:SentryIssueDetailsViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              Name="SentryIssueDetailsWindow">
@@ -33,7 +34,7 @@
     <Grid>
         <Grid Visibility="{Binding ContentVisible}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="400"/>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -63,7 +64,7 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Border Padding="4">
-                                <Grid>
+                                <Grid Width="300">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
@@ -77,33 +78,40 @@
                                     <TextBlock Grid.RowSpan="3" VerticalAlignment="Center" FontWeight="Bold" Foreground="Red" Margin="10, 0, 20, 0" Text="!"/>
                                     <TextBlock Grid.Column="1" Text="{Binding dateCreated}" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"/>
                                     <TextBlock Grid.Column="2" Text=" - Exception" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}"/>
-                                    <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding message}"/>
-                                    <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding title, StringFormat='Exception type: {0}'}"/>
+                                    <TextBlock Grid.Row="1" TextWrapping="Wrap" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding message}"/>
+                                    <TextBlock Grid.Row="2" TextWrapping="Wrap" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding title, StringFormat='Exception type: {0}'}"/>
                                 </Grid>
                             </Border>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
-            <Border Visibility="{Binding SentryEvent.HasUserData, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Column="1" Background="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUIBackgroundKey}}" BorderBrush="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUIBorderKey}}" BorderThickness="2" Margin="0, 10, 5, 10">
+            <Border Padding="5" Visibility="{Binding SentryEvent.HasUserData, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Column="1" Background="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUIBackgroundKey}}" BorderBrush="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUIBorderKey}}" BorderThickness="2" Margin="0, 10, 5, 10">
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding SentryEvent.user.email}"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding SentryEvent.user.id}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SentryEvent.contexts.browser.name}"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SentryEvent.contexts.browser.version}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding SentryEvent.contexts.client_os.name}"/>
-                    <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding SentryEvent.contexts.client_os.version}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding SentryEvent.contexts.device.type}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="User Email:" Margin="0, 0, 5, 0"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="User ID:" Margin="0, 0, 5, 0"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SentryEvent.user.email}"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SentryEvent.user.id}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Browser:" Margin="0, 0, 5, 0"/>
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="Version:" Margin="0, 0, 5, 0"/>
+                    <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding SentryEvent.contexts.browser.name}"/>
+                    <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding SentryEvent.contexts.browser.version}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="4" Text="OS:" Margin="0, 0, 5, 0"/>
+                    <TextBlock Grid.Row="1" Grid.Column="4" Text="Version:" Margin="0, 0, 5, 0"/>
+                    <TextBox Grid.Row="0" Grid.Column="5" Text="{Binding SentryEvent.contexts.client_os.name}"/>
+                    <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding SentryEvent.contexts.client_os.version}"/>
                 </Grid>
             </Border>
             <Border Grid.Row="1" Grid.Column="1" Background="{DynamicResource {x:Static vsshell:VsBrushes.ToolWindowBackgroundKey}}" BorderBrush="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUIBorderKey}}" BorderThickness="2" Margin="0, 10, 5, 10">
@@ -119,6 +127,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
@@ -166,8 +175,8 @@
                             <ItemsControl Grid.Row="6" Grid.Column="1" Margin="10" ItemsSource="{Binding SentryEvent.Stacktrace.FramesSortedInverse}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <StackPanel.Resources>
+                                        <Grid>
+                                            <Grid.Resources>
                                                 <Style TargetType="Button">
                                                     <Setter Property="Background" Value="Transparent"/>
                                                     <Setter Property="BorderThickness" Value="0"/>
@@ -188,9 +197,25 @@
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
-                                            </StackPanel.Resources>
-                                            <Button Command="{Binding GoToMethodCommand}" Content="{Binding Text, Mode=OneWay}"></Button>
-                                        </StackPanel>
+                                            </Grid.Resources>
+                                            <Button Command="{Binding GoToMethodCommand}" HorizontalAlignment="Left">
+                                                <Button.Resources>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <!--<Setter Property="BorderThickness" Value="0"/>-->
+                                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static vsshell:VsBrushes.BrandedUITextKey}}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Clickable}" Value="True">
+                                                                <Setter Property="Foreground" Value="{DynamicResource {x:Static vsshell:VsBrushes.ControlLinkTextKey}}"/>
+                                                                <Setter Property="Cursor" Value="Hand"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Button.Resources>
+                                                <TextBlock Text="{Binding Text, Mode=OneWay}" TextWrapping="Wrap" TextAlignment="Left" HorizontalAlignment="Left"/>
+                                            </Button>
+                                        </Grid>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
@@ -222,45 +247,48 @@
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
                             </ScrollViewer>
-                            <ItemsControl Grid.Row="10" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" ItemsSource="{Binding SentryEvent.ContextsDictionary}" Margin="10" Padding="10">
-                                <ItemsControl.ItemContainerStyle>
-                                    <Style TargetType="ContentPresenter">
-                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                    </Style>
-                                </ItemsControl.ItemContainerStyle>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto"/>
-                                            </Grid.RowDefinitions>
-                                            <TextBlock Text="{Binding Key}" FontWeight="Bold" FontSize="18" Margin="0, 10. 0. 5"/>
-                                            <ItemsControl Grid.Row="1" ItemsSource="{Binding Value}" HorizontalAlignment="Stretch">                           
-                                                <ItemsControl.ItemContainerStyle>
-                                                    <Style TargetType="ContentPresenter">
-                                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                                    </Style>
-                                                </ItemsControl.ItemContainerStyle>
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="200"/>
-                                                                <ColumnDefinition/>
-                                                            </Grid.ColumnDefinitions>
-                                                            <TextBlock Text="{Binding Key}"/>
-                                                            <TextBlock Text="{Binding Value}" HorizontalAlignment="Right" Grid.Column="1"/>
-                                                        </Grid>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                            <TextBlock Grid.Row="11" Grid.ColumnSpan="2" Text="Packages" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}" Margin="10, 10, 10, 0"/>
-                            <ListBox Grid.Row="12" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.ThemedDialogListBoxStyleKey}}" ItemsSource="{Binding SentryEvent.packages}" Margin="10" Padding="10" Height="300">
+                            <TextBlock Grid.Row="10" Grid.ColumnSpan="2" Text="Context" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}" Margin="10, 10, 10, 5"/>
+                            <Border Grid.Row="11" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="10" Padding="10" BorderThickness="1" BorderBrush="{StaticResource {x:Static vsshell:VsBrushes.AccentBorderKey}}">
+                                <ItemsControl HorizontalAlignment="Stretch" ItemsSource="{Binding SentryEvent.ContextsDictionary}">
+                                    <ItemsControl.ItemContainerStyle>
+                                        <Style TargetType="ContentPresenter">
+                                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                        </Style>
+                                    </ItemsControl.ItemContainerStyle>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="{Binding Key}" FontWeight="Bold" FontSize="18"/>
+                                                <ItemsControl Grid.Row="1" ItemsSource="{Binding Value}" HorizontalAlignment="Stretch">                           
+                                                    <ItemsControl.ItemContainerStyle>
+                                                        <Style TargetType="ContentPresenter">
+                                                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                                        </Style>
+                                                    </ItemsControl.ItemContainerStyle>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="200"/>
+                                                                    <ColumnDefinition/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Text="{Binding Key}"/>
+                                                                <TextBlock Text="{Binding Value}" HorizontalAlignment="Right" Grid.Column="1"/>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Border>
+                            <TextBlock Grid.Row="12" Grid.ColumnSpan="2" Text="Packages" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.TextBlockEnvironmentBoldStyleKey}}" Margin="10, 10, 10, 0"/>
+                            <ListBox Grid.Row="13" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.ThemedDialogListBoxStyleKey}}" ItemsSource="{Binding SentryEvent.packages}" Margin="10" Padding="10" Height="300">
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="ListBoxItem">
                                         <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -460,8 +488,8 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBox Text="{Binding key}" Width="150" FontWeight="Bold"/>
-                                    <TextBox Text="{Binding value}"/>
+                                    <TextBox Text="{Binding key}" Width="150" FontWeight="Bold" Padding="0, 0, 0, 5"/>
+                                    <TextBox Text="{Binding value}" Padding="0, 0, 0, 5"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

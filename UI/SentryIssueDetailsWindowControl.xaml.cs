@@ -32,5 +32,10 @@ namespace VSSentry.UI
                 string.Format(System.Globalization.CultureInfo.CurrentUICulture, "Invoked '{0}'", this.ToString()),
                 "SentryIssueDetailsWindow");
         }
+
+        private void TextBox_MouseDown()
+        {
+
+        }
     }
 }
